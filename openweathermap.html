@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div class="container" id="app">
+        <p> {{ city}}, {{ country }} </p>
+        <p>{{ }}</p>
+        <p>Temperature: {{ temp }} °C </p>
+        <p></p>
+        <p></p>
+    </div>
+
+    
+
+    <script>
+        new Vue ({
+            el: '#app',
+            data() {
+                return {
+                    info: [],
+                    temp: '',
+                    humidity: '',
+                    icon: '',
+                    description: '',
+                    country: '',
+                    key: '0c85fbd16d3251b34437a636ccb0494b',
+                    // api_url: 'http://api.openweathermap.org/data/2.5/weather?q=',
+                    city: 'Davao',
+                    units: 'metric' //temperature in celcius
+                }
+            },
+            mounted(){
+                axios.get('http://api.openweathermap.org/data/2.5/weather?q='+this.city+'&units='+this.units+'&APPID='+this.key+'')
+                    .then(response => {
+                        console.log(response);
+                        this.info = response.data;
+                        const data = this.info;
+                        this.temp = this.info.main.temp;
+                        this.humidity = data.main.humidity;
+                        this.description = data.weather.description;
+                        this.icon = data.weather.icon;
+                        this.country = data.sys.country;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    
+            },
+            methods: {
+                
+            },
+        })
+    
+
+    </script>
+</body>
+</html>
